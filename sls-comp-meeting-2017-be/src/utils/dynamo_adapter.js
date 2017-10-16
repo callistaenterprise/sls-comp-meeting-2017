@@ -1,10 +1,19 @@
 import DynamoDB from 'aws-sdk/clients/dynamoDB';
 import {v4} from 'uuid';
 
-const dynamoConfig = {
+let dynamoConfig = {
   sessionToken: process.env.AWS_SESSION_TOKEN,
   region: process.env.AWS_REGION
 };
+
+// connect to local DB if running offline
+if (process.env.IS_OFFLINE) {
+  dynamoConfig = {
+    region: 'localhost',
+    endpoint: 'http://localhost:8000',
+  };
+}
+
 const docClient = new DynamoDB.DocumentClient(dynamoConfig);
 
 export async function getRelatedEntities(keyName, keyValues = [], tableName, attributesToGet = []) {

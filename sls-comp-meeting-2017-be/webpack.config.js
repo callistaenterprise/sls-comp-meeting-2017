@@ -3,7 +3,7 @@ const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
   entry: {
-    hello: ["babel-polyfill", "./src/handler.js"]
+    messages: ["babel-polyfill", "./src/messages/index.js"]
   },
   target: "node",
   externals: [nodeExternals()],

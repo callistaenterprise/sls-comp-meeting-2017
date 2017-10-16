@@ -1,4 +1,6 @@
-import {getEntity, getEntities, getRelatedEntities, createEntity, updateEntity, deleteEntity} from '../utils/dynamo_adapter' 
+import {getEntity, getEntities, getRelatedEntities, createEntity, updateEntity, deleteEntity} from '../utils/dynamo_adapter'
+
+const ServerlessHelpers = require('serverless-helpers-js').loadEnv();
 
 const messageTable = process.env.Messages_Table;
 

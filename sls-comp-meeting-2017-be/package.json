@@ -11,11 +11,18 @@
     "babel-loader": "^7.1.2",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.0",
+    "babel-preset-stage-0": "^6.24.1",
     "prettier": "^1.7.4",
+    "serverless-dynamodb-local": "^0.2.25",
+    "serverless-helpers-js": "^0.2.0",
     "serverless-offline": "^3.16.0",
     "serverless-webpack": "^3.1.2",
     "webpack": "^3.7.1",
     "webpack-node-externals": "^1.6.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "aws-sdk": "^2.133.0",
+    "serverless-dynamodb-client": "^0.0.2",
+    "uuid": "^3.1.0"
+  }
 }
