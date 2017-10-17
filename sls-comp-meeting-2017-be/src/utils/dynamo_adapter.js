@@ -1,20 +1,20 @@
-import DynamoDB from 'aws-sdk/clients/dynamoDB';
+import aws from 'aws-sdk';
 import {v4} from 'uuid';
 
-let dynamoConfig = {
-  sessionToken: process.env.AWS_SESSION_TOKEN,
-  region: process.env.AWS_REGION
-};
-
+let docClient;
 // connect to local DB if running offline
 if (process.env.IS_OFFLINE) {
-  dynamoConfig = {
+  console.log("--- Dynamo is offline!");
+  docClient = new aws.DynamoDB.DocumentClient({
     region: 'localhost',
     endpoint: 'http://localhost:8000',
-  };
+  });
+} else {
+  docClient = new aws.DynamoDB.DocumentClient({
+  sessionToken: process.env.AWS_SESSION_TOKEN,
+  region: process.env.AWS_REGION
+})
 }
-
-const docClient = new DynamoDB.DocumentClient(dynamoConfig);
 
 export async function getRelatedEntities(keyName, keyValues = [], tableName, attributesToGet = []) {
   const end = (length, i, endString) => i + 1 < length ? endString : '';

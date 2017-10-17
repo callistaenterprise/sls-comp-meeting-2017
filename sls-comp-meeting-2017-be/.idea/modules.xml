@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/sls-playground-be.iml" filepath="$PROJECT_DIR$/.idea/sls-playground-be.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/sls-comp-meeting-2017-be.iml" filepath="$PROJECT_DIR$/.idea/sls-comp-meeting-2017-be.iml" />
     </modules>
   </component>
 </project>

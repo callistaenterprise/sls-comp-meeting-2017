@@ -22,10 +22,13 @@ provider:
 
 custom:
   myStage: ${opt:stage, self:provider.stage}
+  dynamodb:
+      start:
+        port: 8000
+        inMemory: true
+        migrate: true
+        seed: true
   webpackIncludeModules: true # enable auto-packing of external modules
-  serverless-offline:
-    babelOptions:
-      presets: ["env"]
   externals: [nodeExternals()]
   lambda_messages: ${self:service}-${self:provider.stage}-messages
   table_messages: ${self:provider.stage}-messages
@@ -33,11 +36,11 @@ custom:
 plugins:
   - serverless-webpack
   - serverless-dynamodb-local
-  - serverless-offline
+  - serverless-offline #serverless-offline needs to be last in the list
 
 functions:
   messages:
-    handler: src/messages
+    handler: index.messages
     environment:
         Messages_Table: ${self:provider.stage}-messages
     events:

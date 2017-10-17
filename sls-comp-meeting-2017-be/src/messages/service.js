@@ -13,11 +13,11 @@ const message = [
 
 export async function createMessage({message}) {
   console.log('--- createMessage', message, messageTable);
-  return createEntity(messageTable, message);
+  return createEntity(messageTable, {message});
 }
 
 export async function updateMessage({message}) {
-  return updateEntity(messageTable, message);
+  return updateEntity(messageTable, {message});
 }
 
 export async function getMessages(args) {

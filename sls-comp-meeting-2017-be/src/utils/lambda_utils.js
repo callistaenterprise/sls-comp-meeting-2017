@@ -1,8 +1,21 @@
-import AWS from 'aws-sdk';
+import AWS from "aws-sdk";
+import R from "ramda";
 
-export async function wrapCallback(event, callback, fn){
+export async function wrapCallback(event, callback, fn) {
   try {
     const result = await fn(event);
+    console.log("---- callback result", JSON.stringify(result, null, 2));
+    callback(null, result);
+  } catch (e) {
+    callback(e, null);
+  }
+}
+
+export async function wrapReducerCallback(event, callback, fn) {
+  try {
+    console.log(event);
+    const result = await fn(R.pathOr({}, ["body", "action"], event));
+    console.log("---- reducer callback result", JSON.stringify(result, null, 2));
     callback(null, result);
   } catch (e) {
     callback(e, null);
@@ -10,14 +23,15 @@ export async function wrapCallback(event, callback, fn){
 }
 
 export const baseLambda = service =>
-  async function (event, context, callback) {
-    console.log('--- message event', JSON.stringify(event, null, 2));
+  async function(event, context, callback) {
+    console.log("--- message event", JSON.stringify(event, null, 2));
     // pass the event through the reducer
-    wrapCallback(event, callback, reduce);
+    wrapCallback(event, callback, service);
   };
 
 const promiseCb = (resolve, reject) => (err, data) => {
-  if (err) reject(err); // console.log(err, err.stack); // an error occurred
+  if (err)
+    reject(err); // console.log(err, err.stack); // an error occurred
   else resolve(data);
 };
 
@@ -27,8 +41,8 @@ export async function invokeLambda(FunctionName, event) {
     FunctionName,
     Payload: JSON.stringify(event)
   };
-  console.log('--- invoke lambda', params);
+  console.log("--- invoke lambda", JSON.stringify(params, null, 2));
   return new Promise((resolve, reject) =>
-    lambda.invoke(params, promiseCb(resolve, reject)));
+    lambda.invoke(params, promiseCb(resolve, reject))
+  );
 }
-

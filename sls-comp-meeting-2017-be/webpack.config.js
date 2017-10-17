@@ -1,9 +1,9 @@
-const path = require('path');
-const nodeExternals = require('webpack-node-externals');
+const path = require("path");
+const nodeExternals = require("webpack-node-externals");
 
 module.exports = {
   entry: {
-    messages: ["babel-polyfill", "./src/messages/index.js"]
+    index: "./index.js"
   },
   target: "node",
   externals: [nodeExternals()],
@@ -21,8 +21,8 @@ module.exports = {
     ]
   },
   output: {
-    libraryTarget: 'commonjs',
-    path: path.join(__dirname, '.webpack'),
-    filename: 'src/[name].js'
+    libraryTarget: "commonjs",
+    path: path.join(__dirname, ".webpack"),
+    filename: "[name].js"
   }
 };
