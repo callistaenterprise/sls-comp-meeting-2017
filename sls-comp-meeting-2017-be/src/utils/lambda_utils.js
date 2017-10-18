@@ -15,7 +15,10 @@ export async function wrapReducerCallback(event, callback, fn) {
   try {
     console.log(event);
     const result = await fn(R.pathOr({}, ["body", "action"], event));
-    console.log("---- reducer callback result", JSON.stringify(result, null, 2));
+    console.log(
+      "---- reducer callback result",
+      JSON.stringify(result, null, 2)
+    );
     callback(null, result);
   } catch (e) {
     callback(e, null);
@@ -35,14 +38,27 @@ const promiseCb = (resolve, reject) => (err, data) => {
   else resolve(data);
 };
 
-export async function invokeLambda(FunctionName, event) {
-  const lambda = new AWS.Lambda();
-  const params = {
-    FunctionName,
-    Payload: JSON.stringify(event)
-  };
-  console.log("--- invoke lambda", JSON.stringify(params, null, 2));
-  return new Promise((resolve, reject) =>
-    lambda.invoke(params, promiseCb(resolve, reject))
-  );
+// FunctionName is the name of the env var in the serverless.yml file
+export async function invokeLambda(FunctionName, event, context) {
+  if (process.env.IS_OFFLINE) {
+    return new Promise((resolve, reject) =>
+      require.ensure([], require =>
+        FunctionName(
+          event,
+          context,
+          promiseCb(resolve, reject)
+        )
+      )
+    );
+  } else {
+    const lambda = new AWS.Lambda();
+    const params = {
+      FunctionName,
+      Payload: JSON.stringify(event)
+    };
+    console.log("--- invoke lambda", JSON.stringify(params, null, 2));
+    return new Promise((resolve, reject) =>
+      lambda.invoke(params, promiseCb(resolve, reject))
+    );
+  }
 }

@@ -8,7 +8,7 @@ import { baseLambda, wrapReducerCallback } from "../utils/lambda_utils";
  * - 'serverless-helpers-js' module is required for Serverless ENV var support.  Hopefully, AWS will add ENV support to Lambda soon :)
  */
 
-const messagesReducer = async (event, context, callback) =>
+export const reducer = async (event, context, callback) =>
   wrapReducerCallback(event, callback, messages_reducer);
 
-export default messagesReducer;
+export default reducer;

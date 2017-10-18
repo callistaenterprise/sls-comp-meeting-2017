@@ -1,7 +1,7 @@
 import * as messageService from './service';
 
 export default async action => {
-  console.log('--- REDUCER', JSON.stringify(action, null, 2));
+  console.log('--- Messages REDUCER', JSON.stringify(action, null, 2));
   switch(action.type) {
     case 'CREATE_MESSAGE':
       console.log('--- reducer create message', action);

@@ -31,7 +31,9 @@ custom:
   webpackIncludeModules: true # enable auto-packing of external modules
   externals: [nodeExternals()]
   lambda_messages: ${self:service}-${self:provider.stage}-messages
+  lambda_users: ${self:service}-${self:provider.stage}-users
   table_messages: ${self:provider.stage}-messages
+  table_users: ${self:provider.stage}-users
 
 plugins:
   - serverless-webpack
@@ -46,6 +48,22 @@ functions:
     events:
       - http:
           path: messages
+          method: POST
+          integration: lambda
+          cors: true
+          request:
+            parameters:
+              paths:
+                id: true
+  users:
+    handler: index.users
+    environment:
+        Users_Table: ${self:provider.stage}-users
+        Messages_Lambda: ${self:custom.lambda_messages}
+        Messages_Lambda_Local: messages
+    events:
+      - http:
+          path: users
           method: POST
           integration: lambda
           cors: true
